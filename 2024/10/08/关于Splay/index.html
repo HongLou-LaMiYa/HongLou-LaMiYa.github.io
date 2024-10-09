@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>关于Splay | 紅樓</title><meta name="author" content="菈米亞"><meta name="copyright" content="菈米亞"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="Splay是？ 一种可以调整形态的平衡树，功能性很强 动态树就是基于Splay强大的变形功能实现的 这篇文章会浅谈Splay平衡树和动态树。 一颗Splay 前置芝士 二叉搜索树 模板传送门 P3369 【模板】普通平衡树 - 洛谷 | 计算机科学教育新生态 (luogu.com.cn) 基本约定 我们会用 ch 数组存放左&#x2F;右子信息 旋转会需要知道某个点的父亲，所以用 f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于Splay">
+<meta property="og:url" content="http://example.com/2024/10/08/%E5%85%B3%E4%BA%8ESplay/index.html">
+<meta property="og:site_name" content="紅樓">
+<meta property="og:description" content="Splay是？ 一种可以调整形态的平衡树，功能性很强 动态树就是基于Splay强大的变形功能实现的 这篇文章会浅谈Splay平衡树和动态树。 一颗Splay 前置芝士 二叉搜索树 模板传送门 P3369 【模板】普通平衡树 - 洛谷 | 计算机科学教育新生态 (luogu.com.cn) 基本约定 我们会用 ch 数组存放左&#x2F;右子信息 旋转会需要知道某个点的父亲，所以用 f">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-10-08T02:34:17.000Z">
+<meta property="article:modified_time" content="2024-10-09T02:02:16.238Z">
+<meta property="article:author" content="菈米亞">
+<meta property="article:tag" content="data structure">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/HongLou.ico"><link rel="canonical" href="http://example.com/2024/10/08/%E5%85%B3%E4%BA%8ESplay/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        if (name && globalFn[key][name]) return
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '关于Splay',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-09 10:02:16'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="web_bg" style="background-image: url(/img/BG6.png);"></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/BG7.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">紅樓</span></a><a class="nav-page-title" href="/"><span class="site-name">关于Splay</span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">关于Splay</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2024-10-08T02:34:17.000Z" title="Created 2024-10-08 10:34:17">2024-10-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2024-10-09T02:02:16.238Z" title="Updated 2024-10-09 10:02:16">2024-10-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h4 id="splay是">Splay是？</h4>
+<p>一种可以调整形态的平衡树，功能性很强</p>
+<p>动态树就是基于Splay强大的变形功能实现的</p>
+<p>这篇文章会浅谈Splay平衡树和动态树。</p>
+<h3 id="一颗splay">一颗Splay</h3>
+<h5 id="前置芝士">前置芝士</h5>
+<p>二叉搜索树</p>
+<h5 id="模板传送门">模板传送门</h5>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3369">P3369
+【模板】普通平衡树 - 洛谷 | 计算机科学教育新生态 (luogu.com.cn)</a></p>
+<h5 id="基本约定">基本约定</h5>
+<p>我们会用 ch 数组存放左/右子信息</p>
+<p>旋转会需要知道某个点的父亲，所以用 fa 数组存放 父亲的信息</p>
+<h5 id="旋转">旋转</h5>
+<figure>
+<img src="D:\CNBLOG\Pictures\SplayPic\rotate.drawio.svg"
+alt="rotate.drawio" />
+<figcaption aria-hidden="true">rotate.drawio</figcaption>
+</figure>
+<p>因为这是二叉搜索树。</p>
+<p>对于右旋，图左有 B&lt;y, x&lt;y ，与图右B在y左子，y在x右子对应。</p>
+<p>左旋同理。</p>
+<p>所以左旋和右旋是正确的。</p>
+<p>不论是左旋还是右旋，我们都把某个结点上旋了，而上旋结点的B子树总和他的父亲不在同一侧，所以我们有了一种简便的写法同时适用于左旋和右旋</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">rot</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;<span class="comment">//把x上旋</span></span><br><span class="line">	<span class="type">int</span> y=fa[x],z=fa[fa[x]],k=<span class="built_in">get</span>(x);<span class="comment">//ch[x][k]即B子树</span></span><br><span class="line">	ch[z][<span class="built_in">get</span>(y)]=x,fa[x]=z;</span><br><span class="line">	ch[y][k]=ch[x][k^<span class="number">1</span>],fa[ch[x][k^<span class="number">1</span>]]=y;<span class="comment">//步骤二</span></span><br><span class="line">	ch[x][k^<span class="number">1</span>]=y,fa[y]=x;<span class="comment">//步骤三，注意步骤三只能在步骤二之后</span></span><br><span class="line">	<span class="built_in">pushup</span>(x),<span class="built_in">pushup</span>(y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="splay">splay</h4>
+<p>Splay的核心操作就在于将某个结点旋至根结点</p>
+<p>我们可以先考虑单旋。</p>
+<p>假定有一个结点 x ,我们需要把 x
+旋至根。想象最极端的一种情况，这棵树目前是一条链，而 x
+正位于这棵链的底端。</p>
+<figure>
+<img src="D:\CNBLOG\Pictures\SplayPic\Example1.drawio.svg"
+alt="Example1.drawio" />
+<figcaption aria-hidden="true">Example1.drawio</figcaption>
+</figure>
+<p>如上图，我们把 x
+旋到了根，但是这棵树还是一条链，如果我每次都旋这条链的底端，我能轻松的卡死这个单旋算法</p>
+<p>于是我们考虑双旋。假设我们要旋转 x ，y 是 x 的父亲，z 是 y 的父亲</p>
+<ul>
+<li>如果 x ，y ，z 不在同侧，旋转两次 x 即可</li>
+</ul>
+<figure>
+<img src="D:\CNBLOG\Pictures\SplayPic\twoRot2.drawio.svg"
+alt="twoRot2.drawio" />
+<figcaption aria-hidden="true">twoRot2.drawio</figcaption>
+</figure>
+<ul>
+<li>如果 x ，y ，z 在同侧，先旋转 y ， 再旋转 x</li>
+</ul>
+<figure>
+<img src="D:\CNBLOG\Pictures\SplayPic\twoRot1.drawio.svg"
+alt="twoRot1.drawio" />
+<figcaption aria-hidden="true">twoRot1.drawio</figcaption>
+</figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">splay</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> goal=<span class="number">0</span>)</span></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(fa[x])&#123; <span class="comment">//我们根据 如果fa[x]=0,代表x已经是根了</span></span><br><span class="line">		<span class="type">int</span> y=fa[x];</span><br><span class="line">		<span class="keyword">if</span>(fa[y]) <span class="comment">//我们不能转x，不然会出问题</span></span><br><span class="line">			<span class="built_in">rot</span>(<span class="built_in">get</span>(x)^<span class="built_in">get</span>(y)?x:y); <span class="comment">//^ 等同于 != ，是一种偷懒()的写法，实际跑起来也没快多少，主要是美观</span></span><br><span class="line">		<span class="built_in">rot</span>(x);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(!goal) root=x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这时候我们再来看链状的情况，依照双选的策略就可以把链旋成优秀的形态。</p>
+<figure>
+<img src="D:\CNBLOG\Pictures\SplayPic\Example1-2.drawio.svg"
+alt="Example1-2.drawio" />
+<figcaption aria-hidden="true">Example1-2.drawio</figcaption>
+</figure>
+<p>这种双旋的思路可以巧妙地<strong>均摊</strong>复杂度</p>
+<p>我们可以通过构造势能函数来证明这样均摊下来的复杂度是O(log n)
+的(具体的数学证明可以移步<a
+target="_blank" rel="noopener" href="https://oi-wiki.org/ds/splay/#时间复杂度">oi-wiki</a>
+)。注意，这<strong>不是期望复杂度</strong>，他最坏的均摊复杂度就是 O(log
+n)。</p>
+<p>我们可以做一些感性的理解，对于树中一个很长的部分，splay他最低的结点可能是O
+(n)的，但是旋转了他之后，这个“很长的部分”的高度必然以一半高度的级别衰减(我们可以从那个链的例子中看出，如果不明显，你可以手动画6个结点的链)。事实上，你要把某个部分卡的很长，也是需要很多步骤的，而这些步骤的便利，恰均摊给“很长的部分”以坏的复杂度。你旋转某个复杂度坏的结点之后，总能使他周围的结点受益，而这些结点则被均摊了好的复杂度。
+所有的操作的次数做一个平均数，便是O(log n)级别的了。</p>
+<h4 id="删除">删除</h4>
+<p>插入、查询前驱后继、查询排名的方法在二叉搜索树里是通用的，故不赘述。</p>
+<p>Splay的删除非常简单。对于一个结点 x ，我们先把他的前驱 y
+旋到根，再把他的后继 z 旋到后驱下面(z&gt;y,
+那么z应该为y的右儿子)，那么这棵树的状态一定是下图这样的。</p>
+<p>道理也很简单。 因为 z 在 y 的右侧， z 的左子必然大于 y，z
+的左子必然小于 z 。那么大于前驱，小于后继的就只能是 x 。</p>
+<figure>
+<img src="D:\CNBLOG\Pictures\SplayPic\delete.drawio.svg"
+alt="delete.drawio" />
+<figcaption aria-hidden="true">delete.drawio</figcaption>
+</figure>
+<p>此时直接删除 x 即可。</p>
+<p>为了满足 “把 z 转到 y 下面” 的需求，我们可以对 <span
+class="math inline">\(splay\)</span> 函数作出一些微调</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">splay</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> goal=<span class="number">0</span>)</span></span>&#123;<span class="comment">//意思是不填第二个参数默认为0</span></span><br><span class="line">	<span class="keyword">while</span>(fa[x]^goal)&#123;</span><br><span class="line">		<span class="type">int</span> y=fa[x];</span><br><span class="line">		<span class="keyword">if</span>(fa[y]^goal) </span><br><span class="line">			<span class="built_in">rot</span>(<span class="built_in">get</span>(x)^<span class="built_in">get</span>(y)?x:y);</span><br><span class="line">		<span class="built_in">rot</span>(x);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(!goal) root=x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">del</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="built_in">prex</span>(x,<span class="number">0</span>),b=<span class="built_in">prex</span>(x,<span class="number">1</span>);<span class="comment">//a为前驱，b为后继</span></span><br><span class="line">	<span class="built_in">splay</span>(a),<span class="built_in">splay</span>(b,a);</span><br><span class="line">	<span class="type">int</span> u=ch[b][<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">if</span>(cnt[u]==<span class="number">1</span>) ch[b][<span class="number">0</span>]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span> --cnt[u],--siz[u],<span class="built_in">splay</span>(u);</span><br><span class="line">    <span class="comment">//这个splay(u)我认为是可以不加的</span></span><br><span class="line">    <span class="comment">//你其实知道u的位置就在b的左子。你不会因为重复做访问u这一步而被卡飞，那么就不用均摊他</span></span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>删除操作也体现了 Spaly 强大的变形功能，
+我们可以主观的调整一棵树的形态来满足我们的需求，这在后续操作中非常重要。</p>
+<h5 id="细节和调试指南">细节和调试指南</h5>
+<p>Splay中的查询操作也都需要均摊复杂度，因为你没法保证<strong>单次查询</strong>的复杂度是O(log
+n)的，所以只能均摊他，做法就是找到某个点之后splay(x)。如果你不进行均摊，我只要反复找那个点，复杂度就出错了。</p>
+<p>我们会加入上界和下界，一个大于最大值，一个小于最小值，来保证前驱和后驱都必定能被找到。</p>
+<p><strong>不可以旋转根结点</strong>。这很大概率会使你的程序莫名WA。检查的
+splay 函数是怎么判根的。</p>
+<p><strong>不可以旋转不存在的结点(包括空结点)</strong>。这会使你的程序TLE。你可能在查询函数里
+splay
+了值，而非结点的序号，或者你再调用查询函数的时候没有查询值，而查询了序号...各种各样，总之，注意你的函数调用。</p>
+<p>以上两个非法操作都和 fa[0] 不为 0
+有关，我们正常旋转时，如果某个结点有空子树，那空结点的父亲就不为 0
+了，这是合法的。但是要旋转的点涉及到空结点时(他或他的父亲是空的)就出问题了。如果你的非法操作只有旋根，那还比较微妙，只会让你WA，因为你把空父亲旋下来相当于丧失了你的左子，还给自己的父亲连到一个未知的东西上。如果你旋了不存在的点，他甚至会让你的平衡树存在环，你就会TLE。</p>
+<p>通用的检查方法。1. 你的root有没有更新（这会造成各种蜜汁错误）。2.
+打印出 fa 数组，手动画一画看看你的树出现什么问题了</p>
+<p><strong>另一种写法</strong></p>
+<p>由于splay的过程中，我们实际只需要更新被转下去的结点，一直上旋的点始终只有
+x
+(可以自己手模一下两种双旋需要的更新操作)。所以最后更新一下根就可以。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">rot</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> y=fa[x],z=fa[fa[x]],k=<span class="built_in">get</span>(x);</span><br><span class="line">	ch[z][<span class="built_in">get</span>(y)]=x,fa[x]=z;</span><br><span class="line">	ch[y][k]=ch[x][k^<span class="number">1</span>],fa[ch[x][k^<span class="number">1</span>]]=y;</span><br><span class="line">	ch[x][k^<span class="number">1</span>]=y,fa[y]=x;</span><br><span class="line">	<span class="built_in">pushup</span>(y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">splay</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> goal=<span class="number">0</span>)</span></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(fa[x]^goal)&#123;</span><br><span class="line">		<span class="type">int</span> y=fa[x];</span><br><span class="line">		<span class="keyword">if</span>(fa[y]^goal) </span><br><span class="line">			<span class="built_in">rot</span>(<span class="built_in">get</span>(x)^<span class="built_in">get</span>(y)?x:y);</span><br><span class="line">		<span class="built_in">rot</span>(x);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="built_in">pushup</span>(x);</span><br><span class="line">	<span class="keyword">if</span>(!goal) root=x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是在数据结构中，我们总希望每一次操作之后信息都是正确的，这样最简明和便于书写，所以我更喜欢在rot里push两次的写法。如果你要
+push 两次，注意是先push(y) ，后 push(x) 。</p>
+<h4 id="贴">贴</h4>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">typedef</span> <span class="type">long</span> <span class="type">long</span> ll;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">read</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> x=<span class="number">0</span>,f=<span class="number">1</span>;<span class="type">char</span> c=<span class="built_in">getchar</span>();</span><br><span class="line">	<span class="keyword">for</span>(;!<span class="built_in">isdigit</span>(c);c=<span class="built_in">getchar</span>()) <span class="keyword">if</span>(!(c^<span class="string">&#x27;-&#x27;</span>)) f=<span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span>(;<span class="built_in">isdigit</span>(c);c=<span class="built_in">getchar</span>()) x=(x&lt;&lt;<span class="number">3</span>)+(x&lt;&lt;<span class="number">1</span>)+(c^<span class="number">48</span>);</span><br><span class="line">	<span class="keyword">return</span> x*f;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1e5</span><span class="number">+10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> INF = <span class="number">1e7</span><span class="number">+10</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> cnt[N],siz[N],ch[N][<span class="number">2</span>],fa[N],val[N],tot,root;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">get</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;<span class="keyword">return</span> (ch[fa[x]][<span class="number">1</span>]==x);&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">pushup</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;siz[x]=siz[ch[x][<span class="number">0</span>]]+siz[ch[x][<span class="number">1</span>]]+cnt[x];&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">rot</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> y=fa[x],z=fa[fa[x]],k=<span class="built_in">get</span>(x);</span><br><span class="line">	ch[z][<span class="built_in">get</span>(y)]=x,fa[x]=z;</span><br><span class="line">	ch[y][k]=ch[x][k^<span class="number">1</span>],fa[ch[x][k^<span class="number">1</span>]]=y;</span><br><span class="line">	ch[x][k^<span class="number">1</span>]=y,fa[y]=x;</span><br><span class="line">	<span class="built_in">pushup</span>(x),<span class="built_in">pushup</span>(y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">splay</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> goal=<span class="number">0</span>)</span></span>&#123;</span><br><span class="line">	<span class="keyword">while</span>(fa[x]^goal)&#123;</span><br><span class="line">		<span class="type">int</span> y=fa[x];</span><br><span class="line">		<span class="keyword">if</span>(fa[y]^goal) </span><br><span class="line">			<span class="built_in">rot</span>(<span class="built_in">get</span>(x)^<span class="built_in">get</span>(y)?x:y);</span><br><span class="line">		<span class="built_in">rot</span>(x);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(!goal) root=x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">find</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!root) <span class="keyword">return</span>;</span><br><span class="line">	<span class="type">int</span> u=root;</span><br><span class="line">	<span class="keyword">while</span>(ch[u][x&gt;val[u]]&amp;&amp;x!=val[u])</span><br><span class="line">		u=ch[u][x&gt;val[u]];</span><br><span class="line">	<span class="built_in">splay</span>(u);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">ins</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> u=root,f=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(u&amp;&amp;val[u]!=x)</span><br><span class="line">		f=u,u=ch[u][x&gt;val[u]];</span><br><span class="line">	<span class="keyword">if</span>(u) ++cnt[u];</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		u=++tot;</span><br><span class="line">		<span class="keyword">if</span>(!root) root=u;</span><br><span class="line">		<span class="keyword">if</span>(f) ch[f][x&gt;val[f]]=u;</span><br><span class="line">		ch[u][<span class="number">0</span>]=ch[u][<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">		fa[u]=f,val[u]=x;</span><br><span class="line">		cnt[u]=siz[u]=<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">splay</span>(u);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">prex</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> f)</span></span>&#123;<span class="comment">//0pre 1nxt</span></span><br><span class="line">	<span class="built_in">find</span>(x);</span><br><span class="line">	<span class="type">int</span> u=root;</span><br><span class="line">	<span class="keyword">if</span>(x&lt;val[u]&amp;&amp;f) <span class="keyword">return</span> u;</span><br><span class="line">	<span class="keyword">if</span>(x&gt;val[u]&amp;&amp;!f) <span class="keyword">return</span> u;</span><br><span class="line">	u=ch[u][f];</span><br><span class="line">	<span class="keyword">while</span>(ch[u][f^<span class="number">1</span>]) u=ch[u][f^<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">return</span> u;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">del</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> a=<span class="built_in">prex</span>(x,<span class="number">0</span>),b=<span class="built_in">prex</span>(x,<span class="number">1</span>);</span><br><span class="line">	<span class="built_in">splay</span>(a),<span class="built_in">splay</span>(b,a);</span><br><span class="line">	<span class="type">int</span> u=ch[b][<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">if</span>(cnt[u]==<span class="number">1</span>) ch[b][<span class="number">0</span>]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span> --cnt[u],--siz[u],<span class="built_in">splay</span>(u);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">rnk</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> u=<span class="built_in">prex</span>(x,<span class="number">0</span>);</span><br><span class="line">	<span class="built_in">splay</span>(u);</span><br><span class="line">	<span class="keyword">return</span> siz[ch[u][<span class="number">0</span>]]+cnt[u]<span class="number">+1</span>; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">kth</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> u=root;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">		<span class="type">int</span> ls=ch[u][<span class="number">0</span>];</span><br><span class="line">		<span class="keyword">if</span>(siz[ls]&gt;=x) u=ls;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(x&gt;siz[ls]&amp;&amp;x&lt;=siz[ls]+cnt[u]) </span><br><span class="line">			<span class="keyword">return</span> u;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			x-=cnt[u]+siz[ls],u=ch[u][<span class="number">1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> m;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;m);</span><br><span class="line">	<span class="built_in">ins</span>(INF);<span class="built_in">ins</span>(-INF);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;++i)&#123;</span><br><span class="line">		<span class="type">int</span> opt=<span class="built_in">read</span>(),x=<span class="built_in">read</span>();</span><br><span class="line">		<span class="keyword">if</span>(opt==<span class="number">1</span>) <span class="built_in">ins</span>(x);</span><br><span class="line">		<span class="keyword">if</span>(opt==<span class="number">2</span>) <span class="built_in">del</span>(x);</span><br><span class="line">		<span class="keyword">if</span>(opt==<span class="number">3</span>) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,<span class="built_in">rnk</span>(x)<span class="number">-1</span>);</span><br><span class="line">		<span class="keyword">if</span>(opt==<span class="number">4</span>) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,val[<span class="built_in">kth</span>(x<span class="number">+1</span>)]);</span><br><span class="line">		<span class="keyword">if</span>(opt==<span class="number">5</span>) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,val[<span class="built_in">prex</span>(x,<span class="number">0</span>)]);</span><br><span class="line">		<span class="keyword">if</span>(opt==<span class="number">6</span>) <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,val[<span class="built_in">prex</span>(x,<span class="number">1</span>)]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://example.com">菈米亞</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://example.com/2024/10/08/%E5%85%B3%E4%BA%8ESplay/">http://example.com/2024/10/08/%E5%85%B3%E4%BA%8ESplay/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/data-structure/">data structure</a></div><div class="post-share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="next-post pull-full" href="/2024/10/08/FFT/" title="FFT"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">Next</div><div class="next_info">FFT</div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">菈米亞</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HongLou-LaMiYa"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#splay%E6%98%AF"><span class="toc-number">1.</span> <span class="toc-text">Splay是？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E9%A2%97splay"><span class="toc-number"></span> <span class="toc-text">一颗Splay</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E8%8A%9D%E5%A3%AB"><span class="toc-number">0.1.</span> <span class="toc-text">前置芝士</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E4%BC%A0%E9%80%81%E9%97%A8"><span class="toc-number">0.2.</span> <span class="toc-text">模板传送门</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%BA%A6%E5%AE%9A"><span class="toc-number">0.3.</span> <span class="toc-text">基本约定</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%97%8B%E8%BD%AC"><span class="toc-number">0.4.</span> <span class="toc-text">旋转</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#splay"><span class="toc-number">1.</span> <span class="toc-text">splay</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A0%E9%99%A4"><span class="toc-number">2.</span> <span class="toc-text">删除</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%BB%86%E8%8A%82%E5%92%8C%E8%B0%83%E8%AF%95%E6%8C%87%E5%8D%97"><span class="toc-number">2.1.</span> <span class="toc-text">细节和调试指南</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B4%B4"><span class="toc-number">3.</span> <span class="toc-text">贴</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/08/%E5%85%B3%E4%BA%8ESplay/" title="关于Splay">关于Splay</a><time datetime="2024-10-08T02:34:17.000Z" title="Created 2024-10-08 10:34:17">2024-10-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/08/FFT/" title="FFT">FFT</a><time datetime="2024-10-08T01:56:43.000Z" title="Created 2024-10-08 09:56:43">2024-10-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/05/hello-world/" title="Hello World">Hello World</a><time datetime="2024-10-05T02:15:43.359Z" title="Created 2024-10-05 10:15:43">2024-10-05</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2024 By 菈米亞</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const loadMathjax = () => {
+    if (!window.MathJax) {
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          tags: 'none',
+        },
+        chtml: {
+          scale: 1.1
+        },
+        options: {
+          enableMenu: true,
+          renderActions: {
+            findScript: [10, doc => {
+              for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+                const display = !!node.type.match(/; *mode=display/)
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+                const text = document.createTextNode('')
+                node.parentNode.replaceChild(text, node)
+                math.start = {node: text, delim: '', n: 0}
+                math.end = {node: text, delim: '', n: 0}
+                doc.math.push(math)
+              }
+            }, '']
+          }
+        }
+      }
+      
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+      script.id = 'MathJax-script'
+      script.async = true
+      document.head.appendChild(script)
+    } else {
+      MathJax.startup.document.state(0)
+      MathJax.texReset()
+      MathJax.typesetPromise()
+    }
+  }
+
+  btf.addGlobalFn('encrypt', loadMathjax, 'mathjax')
+  window.pjax ? loadMathjax() : window.addEventListener('load', loadMathjax)
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
